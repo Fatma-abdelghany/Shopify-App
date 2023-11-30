@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:shoppify_app/utils/constants/colors_constants.dart';
 import 'package:shoppify_app/widgets/customButton.dart';
@@ -16,6 +17,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  late GlobalKey<FormState> formKey;
+
   TextEditingController? EmailController ;
   TextEditingController? PasswordController;
   TextEditingController? NameController;
@@ -23,6 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     // TODO: implement initState
+    formKey=GlobalKey<FormState>();
     EmailController = TextEditingController();
     PasswordController = TextEditingController();
     NameController = TextEditingController();
@@ -34,25 +38,39 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(40.0),
         child: Center(
           child: Form(
             child: Column(
               children: [
-                Card(
-                  color: Colors.white,
+                Container(
+            padding: EdgeInsets.all(15),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              )),
+
                   child: Column(
                     children: [
-                      SizedBox(height: 10,),
                       CustomTextField(
                         Controller: EmailController,
                         isPassword: false,
                         hint:StringsConstants.userNameOrEmail,
                         myPrefixIcon: Icon(Icons.email_outlined),
                         type: TextInputType.emailAddress,
+                        validatorFun: (value){
+                          if(value==null||value==""){
+                            return StringsConstants.emailRequired;
+                          }
+                          if (!EmailValidator.validate(value)) {
+                            return StringsConstants.validEmail;
+                          }
+                          return null;
+                        },
 
                       ),
-                      SizedBox(height: 10,),
                       Divider(
                           color: Color(0x9bd7d3d3)
                       ),
@@ -61,38 +79,62 @@ class _SignUpPageState extends State<SignUpPage> {
                         isPassword: false,
                         hint:StringsConstants.userName,
                         myPrefixIcon: Icon(Icons.person_outlined),
-                        type: TextInputType.emailAddress,
+                        type: TextInputType.text,
+                        validatorFun:(value){
+                          if(value==null||value==""){
+                            return StringsConstants.userNameRequired;
+                          }
 
-                      ),
-                      SizedBox(height: 10,),
-                      Divider(
-                          color: ColorsConstants.bgColor,
+                          return null;
+                        },
+
                       ),
 
 
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 20,),
 
-                CustomTextField(
-                  Controller:PasswordController ,
-                  isPassword: true,
-                  hint:StringsConstants.password,
-                  myPrefixIcon: Icon(Icons.lock_outline_rounded),
-                  type: TextInputType.emailAddress,
+                Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                      ))
+                  ,
 
+                  child: CustomTextField(
+                    Controller:PasswordController ,
+                    isPassword: true,
+                    hint:StringsConstants.password,
+                    myPrefixIcon: Icon(Icons.lock_outline_rounded),
+                    type: TextInputType.emailAddress,
+                    validatorFun:(value){
+                      if(value==null||value==""){
+                        return StringsConstants.passwordRequired;
+                      }
+                      if (value.length<8) {
+                        return StringsConstants.validPassword;
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 SizedBox(height: 10,),
 
                 const SizedBox(height: 10),
 
-                CustomButton(text:StringsConstants.login, myBtnPressed: (){}),
+                CustomButton(text:StringsConstants.signUP, myBtnPressed: (){
+                  if(!(formKey.currentState?.validate()??false) ) return;
+                }),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GreyTxt(label: StringsConstants.donothaveAccount,),
+                    GreyTxt(label: StringsConstants.notHaveAccount,),
                     TextButton(
                       child:  RedTxt(label: StringsConstants.createAccount),
                       onPressed: () {

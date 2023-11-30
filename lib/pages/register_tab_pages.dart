@@ -30,15 +30,12 @@ class _RegisterTabPagesState extends State<RegisterTabPages> with SingleTickerPr
 
     return Scaffold(
       backgroundColor: ColorsConstants.bgColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 50,),
-            designTabs(theme, context),
-            buildTabBarPages(),
-          ],
-        ),
+      body: Column(
+        children: [
+          SizedBox(height: 50,),
+          designTabs(theme, context),
+          buildTabBarPages(),
+        ],
       ),
     );
   }
@@ -53,6 +50,14 @@ class _RegisterTabPagesState extends State<RegisterTabPages> with SingleTickerPr
             child: TabBar(
               controller: _tabController,
               labelStyle: Theme.of(context).textTheme.displayLarge,
+              indicatorColor: Colors.transparent,
+              // change hover color
+              overlayColor: MaterialStateProperty.resolveWith<Color?>(
+              (Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered))
+              return ColorsConstants.bgColor; //<-- SEE HERE
+              return null;
+              },),
               tabs: const [
                 // first tab
                 Tab(

@@ -8,7 +8,9 @@ class GreyTxt extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: Theme.of(context).textTheme.displaySmall
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.displaySmall
+
 
     );
   }

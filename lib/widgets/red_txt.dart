@@ -8,6 +8,7 @@ class RedTxt extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
         label,
+        maxLines: 2,
         style: Theme.of(context).textTheme.headlineSmall
 
     );

@@ -10,4 +10,5 @@ class ColorsConstants{
   static Color cardColor =  const Color(0xffffffff);
   static Color buttonColor =  const Color(0xffFF6969);
   static Color greyTxtColor =  const Color(0xff515C6F);
+  static Color txtFieldLabelColor =  const Color(0xffc5c9cf);
 }

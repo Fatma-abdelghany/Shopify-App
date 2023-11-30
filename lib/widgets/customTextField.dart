@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:shoppify_app/utils/constants/colors_constants.dart';
 class CustomTextField extends StatelessWidget {
 
   CustomTextField({
@@ -7,7 +8,9 @@ class CustomTextField extends StatelessWidget {
     required this.Controller,
     required this.isPassword,
     required this.hint,
-    required this.myPrefixIcon, required this.type
+    this.validatorFun,
+    required this.myPrefixIcon,
+    required this.type
   });
 
   final TextEditingController? Controller;
@@ -15,20 +18,29 @@ class CustomTextField extends StatelessWidget {
   String hint;
   TextInputType type;
   Icon myPrefixIcon;
+  String? Function(String?)? validatorFun;
+  Color fillColor= Colors.white;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: Controller,
       obscureText: isPassword?true:false,
+      obscuringCharacter: "*",
       keyboardType: type,
+      validator: validatorFun,
       decoration: InputDecoration(
           label:Text(hint) ,
+        labelStyle: TextStyle(
+          color:ColorsConstants.txtFieldLabelColor,
+        ),
           border: InputBorder.none,
           hintText: hint,
           filled: true,
-          fillColor: Colors.white,
-          prefixIcon:myPrefixIcon
+          hoverColor: fillColor,
+          fillColor:fillColor,
+          prefixIcon:myPrefixIcon,
+
 
       ),
     );
